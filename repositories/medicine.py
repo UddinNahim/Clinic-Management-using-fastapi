@@ -32,3 +32,11 @@ class MedicineRepository:
             self.db.commit()
             self.db.refresh(medicine)
         return medicine
+    
+    def delete_medicine(self,medicine_id:int):
+        medicine = self.get_medicines_by_id(medicine_id)
+        if medicine:
+            self.db.delete(medicine)
+            self.db.commit()
+        return medicine
+

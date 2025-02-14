@@ -1,4 +1,4 @@
-from fastapi import APIRouter,Depends
+from fastapi import APIRouter,Depends, HTTPException
 from sqlalchemy.orm import Session
 from db.session import SessionLocal, get_db
 from repositories.medicine import MedicineRepository
@@ -25,6 +25,15 @@ def get_medicine(medicine_id:int, db:Session = Depends(get_db)):
 def update_medicine_stock(medicine_id:int, new_stock:int,db:Session = Depends(get_db)):
     repo = MedicineRepository(db)
     return repo.update_medicine_stock(medicine_id,new_stock)
+
+@router.delete("/{medicine_id}")
+def delete_medicine(medicine_id:int, db:Session = Depends(get_db)):
+    repo = MedicineRepository(db=db)
+    medicine =  repo.delete_medicine(medicine_id=medicine_id)
+    if not medicine:
+        raise HTTPException(status_code=404, detail="Medicine not found")
+    return {"message":"medicine deleted  successfully"}
+    
 
 
 

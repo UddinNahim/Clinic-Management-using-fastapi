@@ -10,12 +10,10 @@ app = FastAPI(title=settings.PROJECT_NAME,version=settings.PROJECT_VERSION)
 
 app.include_router(doctor.router)
 app.include_router(patient.router)
-app.include_router(appointment.router
-)
-app.include_router(medicine.router
-)
+app.include_router(appointment.router)
+app.include_router(medicine.router)
 
 
-@app.get("/")
-def hello_api():
-        return {"msg":"Hello FastAPI"}
+# @app.get("/")
+# def hello_api():
+#         return {"msg":"Hello FastAPI"}
