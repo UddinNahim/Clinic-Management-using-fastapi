@@ -6,7 +6,7 @@ from schemas.medicine import MedicineCreate, MedicineResponse
 
 router = APIRouter(prefix="/medicines",tags=["Medicines"])
 
-@router.post("/",response_model=[MedicineResponse])
+@router.post("/",response_model=MedicineResponse)
 def create_medicine(medicine: MedicineCreate, db: Session = Depends(get_db)):
     repo = MedicineRepository(db)
     return repo.create_medicine(medicine)

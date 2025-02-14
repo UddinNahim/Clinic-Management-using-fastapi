@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 class MedicineBase(BaseModel):
     name:str
-    manufacurer:str
+    manufacturer:str
     price : float
     stock: int = 0
 
@@ -12,5 +12,5 @@ class MedicineCreate(MedicineBase):
 class MedicineResponse(MedicineBase):
     id:int
 
-    class config:
+    class Config:
         orm_mode = True
