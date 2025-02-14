@@ -4,15 +4,35 @@ from schemas.doctor import DoctorCreate
 
 
 
-def create_doctor(db: Session, doctor: DoctorCreate):
-    db_doctor = Doctor(**doctor.dict())
-    db.add(db_doctor)
-    db.commit()
-    db.refresh(db_doctor)
-    return db_doctor
+class DoctorRepository:
+    def __init__(self, db: Session):
+        self.db = db
 
-def get_doctors(db: Session):
-    return db.query(Doctor).all()
+    def create_doctor(self, doctor: DoctorCreate):
+        db_doctor = Doctor(**doctor.dict())
+        self.db.add(db_doctor)
+        self.db.commit()
+        self.db.refresh(db_doctor)
+        return db_doctor
 
-def get_doctor_by_id(db: Session, doctor_id: int):
-    return db.query(Doctor).filter(Doctor.id == doctor_id).first()
+    def get_doctors(self):
+        return self.db.query(Doctor).all()
+
+    def get_doctor_by_id(self, doctor_id: int):
+        return self.db.query(Doctor).filter(Doctor.id == doctor_id).first()
+    
+    def update_doctor(self, doctor_id:int,update_data: dict):
+        doctor = self.get_doctor_by_id(doctor_id)
+        if doctor:
+            for key, value in update_data.items():
+                setattr(doctor,key,value)
+            self.db.commit()
+            self.db.refresh(doctor)
+        return doctor
+    
+    def delete_doctor(self, doctor_id:int):
+        doctor = self.get_doctor_by_id(doctor_id=doctor_id)
+        if doctor:
+            self.db.delete(doctor)
+            self.db.commit()
+        return doctor

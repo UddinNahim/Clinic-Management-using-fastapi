@@ -27,3 +27,5 @@ def update_medicine_stock(medicine_id:int, new_stock:int,db:Session = Depends(ge
     return repo.update_medicine_stock(medicine_id,new_stock)
 
 
+
+
