@@ -18,6 +18,3 @@ app.include_router(medicine.router)
 
 
 
-# @app.get("/")
-# def hello_api():
-#         return {"msg":"Hello FastAPI"}

@@ -30,6 +30,7 @@ class PatientRepository:
             self.db.add(db_patient)
 
             try:
+                self.db.add(db_patient)
                 self.db.commit()
                 self.db.refresh(db_patient)
             except IntegrityError:

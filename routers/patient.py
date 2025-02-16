@@ -11,10 +11,13 @@ from utils.jwt_manager import create_access_token,create_refresh_token,verify_to
 
 router = APIRouter(prefix="/patients", tags=["Patients"])
 
+
 @router.post("/", response_model=PatientResponse)
 def create_patient(patient: PatientCreate, db: Session = Depends(get_db)):
     repo = PatientRepository(db)
-    return repo.create_patient(patient)
+    db_patient = repo.create_patient(patient)
+    return PatientResponse(**db_patient.__dict__)  # Convert SQLAlchemy model to Pydantic
+
 
 @router.get("/", response_model=list[PatientResponse])
 def get_patients(db: Session = Depends(get_db)):
