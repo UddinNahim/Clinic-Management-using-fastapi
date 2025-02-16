@@ -1,7 +1,10 @@
+from fastapi import HTTPException
+from psycopg2 import IntegrityError
 from sqlalchemy.orm import Session
 from db.models.doctor import Doctor
 from schemas.doctor import DoctorCreate
-from core.security import hash_password
+# from core.security import hash_password
+from utils.password_manager import PasswordManager
 
 class DoctorRepository:
     def __init__(self, db: Session):
@@ -11,21 +14,22 @@ class DoctorRepository:
         if not doctor.email:  # Prevent null email
             raise ValueError("Email is required")
 
-        hashed_password = hash_password(doctor.password)
-
-        db_doctor = Doctor(
-            name=doctor.name,
-            specialty=doctor.specialty,
-            phone=doctor.phone,
-            email=doctor.email,
-            hashed_password=hashed_password
-        )
-
+        if doctor.password:
+                        hashed_password = PasswordManager.get_password_hash(doctor.password)
+                        doctor.password = hashed_password
+                    
+        db_doctor = Doctor(**doctor.dict())
         self.db.add(db_doctor)
-        self.db.commit()
-        self.db.refresh(db_doctor)
-        return db_doctor
 
+
+        try:
+                self.db.commit()
+                self.db.refresh(db_doctor)
+        except IntegrityError:
+                self.db.rollback()
+                raise HTTPException(status_code=400, detail="Email or Phone already registered")
+            
+        return db_doctor
 
     def get_doctors(self):
         return self.db.query(Doctor).all()

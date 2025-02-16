@@ -21,11 +21,10 @@ class Settings:
         f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}"
     )
     print(DATABASE_URL)
-
-# # rest of the code
-#     SECRET_KEY: str = os.getenv("SECRET_KEY")
-#     ACCESS_TOKEN_EXPIRE_MINUTES: int = 5
-#     JWT_ALGORITHM: str = "HS256"
+    SECRET_KEY: str = os.getenv("SECRET_KEY")
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 5
+    REFRESH_TOKEN_EXPIRE_MINUTES: int = 15
+    JWT_ALGORITHM: str = "HS256"
 
 
 

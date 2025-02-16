@@ -11,7 +11,8 @@ class DoctorCreate(DoctorBase):
     pass  # Used when creating a doctor
 
 class DoctorResponse(DoctorBase):
-    id: int
+    id: int 
+
 
     class Config:
         orm_mode = True
