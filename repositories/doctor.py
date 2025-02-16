@@ -1,19 +1,31 @@
 from sqlalchemy.orm import Session
 from db.models.doctor import Doctor
 from schemas.doctor import DoctorCreate
-
-
+from core.security import hash_password
 
 class DoctorRepository:
     def __init__(self, db: Session):
         self.db = db
 
     def create_doctor(self, doctor: DoctorCreate):
-        db_doctor = Doctor(**doctor.dict())
+        if not doctor.email:  # Prevent null email
+            raise ValueError("Email is required")
+
+        hashed_password = hash_password(doctor.password)
+
+        db_doctor = Doctor(
+            name=doctor.name,
+            specialty=doctor.specialty,
+            phone=doctor.phone,
+            email=doctor.email,
+            hashed_password=hashed_password
+        )
+
         self.db.add(db_doctor)
         self.db.commit()
         self.db.refresh(db_doctor)
         return db_doctor
+
 
     def get_doctors(self):
         return self.db.query(Doctor).all()

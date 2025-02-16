@@ -8,6 +8,7 @@ class PatientBase(BaseModel):
     phone: str
     address: str | None = None
     dob: date | None = None
+    password: str
 
 class PatientCreate(PatientBase):
     pass  # Used when creating a patient

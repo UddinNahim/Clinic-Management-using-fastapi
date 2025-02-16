@@ -13,6 +13,8 @@ class Patient(Base):
     phone = Column(String, unique=True, nullable=False)
     address = Column(String, nullable=True)
     dob = Column(Date, nullable=True)
+    email = Column(String, unique=True, nullable=False)
+    password = Column(String, nullable=True)
 
     # Relationship with Appointments
     appointments = relationship("Appointment", back_populates="patient")

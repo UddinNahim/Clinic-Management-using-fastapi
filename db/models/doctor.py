@@ -10,6 +10,9 @@ class Doctor(Base):
     name = Column(String, nullable=False)
     specialty = Column(String, nullable=False)
     phone = Column(String, unique=True, nullable=False)
+    email = Column(String, unique=True, nullable=False)
+    password = Column(String, nullable=True)
+
 
     # Relationship with Appointments
     appointments = relationship("Appointment", back_populates="doctor")

@@ -22,6 +22,11 @@ class Settings:
     )
     print(DATABASE_URL)
 
+# # rest of the code
+#     SECRET_KEY: str = os.getenv("SECRET_KEY")
+#     ACCESS_TOKEN_EXPIRE_MINUTES: int = 5
+#     JWT_ALGORITHM: str = "HS256"
+
 
 
 

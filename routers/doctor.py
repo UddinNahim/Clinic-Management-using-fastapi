@@ -1,5 +1,7 @@
 from fastapi import APIRouter, Depends ,HTTPException
 from sqlalchemy.orm import Session
+from core.jwt_dependencies import get_current_user
+from db.models.doctor import Doctor
 from db.session import SessionLocal, get_db
 
 from repositories.doctor import DoctorRepository
@@ -14,7 +16,7 @@ def create_doctor(doctor: DoctorCreate, db: Session = Depends(get_db)):
     return repo.create_doctor(doctor)
 
 @router.get("/", response_model=list[DoctorResponse])
-def get_doctors(db: Session = Depends(get_db)):
+def get_doctors(db: Session = Depends(get_db), current_user : Doctor = Depends(get_current_user)):
     repo = DoctorRepository(db)
     return repo.get_doctors()
 
